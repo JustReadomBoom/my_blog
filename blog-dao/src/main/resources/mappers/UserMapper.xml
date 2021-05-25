@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zqz.blog.mapper.UserMapper">
+  <resultMap id="BaseResultMap" type="com.zqz.blog.entity.User">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="user_name" jdbcType="VARCHAR" property="userName" />
+    <result column="password" jdbcType="VARCHAR" property="password" />
+    <result column="nick_name" jdbcType="VARCHAR" property="nickName" />
+    <result column="age" jdbcType="INTEGER" property="age" />
+    <result column="sex" jdbcType="INTEGER" property="sex" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="photo_url" jdbcType="VARCHAR" property="photoUrl" />
+    <result column="status" jdbcType="INTEGER" property="status" />
+    <result column="c_time" jdbcType="TIMESTAMP" property="cTime" />
+    <result column="u_time" jdbcType="TIMESTAMP" property="uTime" />
+  </resultMap>
+
+  <sql id="Base_Column_List">
+    id, user_name, `password`, nick_name, age, sex, mobile, email, photo_url, `status`, c_time,
+    u_time
+  </sql>
+
+  <insert id="insert" parameterType="com.zqz.blog.entity.User">
+    insert into user (user_name, `password`, nick_name,
+      age, sex, mobile, email, photo_url,`status`)
+    values (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{nickName,jdbcType=VARCHAR}, 
+      #{age,jdbcType=INTEGER}, #{sex,jdbcType=INTEGER}, #{mobile,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR}, 
+      #{photoUrl,jdbcType=VARCHAR}, #{status,jdbcType=INTEGER})
+  </insert>
+
+  <select id="getUserByUserName" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+    where user_name = #{userName}
+  </select>
+
+  <select id="getUsers" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+  </select>
+
+  <select id="getUserById" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>
+    from user
+    where id = #{authId}
+  </select>
+
+</mapper>

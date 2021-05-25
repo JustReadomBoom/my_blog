@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.zqz.blog.mapper.ReplyInfoMapper">
+  <resultMap id="BaseResultMap" type="com.zqz.blog.entity.ReplyInfo">
+    <id column="id" jdbcType="INTEGER" property="id" />
+    <result column="review_id" jdbcType="INTEGER" property="reviewId" />
+    <result column="replyer_id" jdbcType="INTEGER" property="replyerId" />
+    <result column="replyer_name" jdbcType="VARCHAR" property="replyerName" />
+    <result column="date" jdbcType="DATE" property="date" />
+    <result column="c_time" jdbcType="TIMESTAMP" property="cTime" />
+    <result column="u_time" jdbcType="TIMESTAMP" property="uTime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.zqz.blog.entity.ReplyInfo">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, review_id, replyer_id, replyer_name, `date`, c_time, u_time
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+
+  <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from reply_info
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+
+  <insert id="insert" parameterType="com.zqz.blog.entity.ReplyInfo">
+    insert into reply_info (review_id, replyer_id, replyer_name,
+      `date`, content)
+    values (#{reviewId,jdbcType=INTEGER}, #{replyerId,jdbcType=INTEGER}, #{replyerName,jdbcType=VARCHAR}, 
+      #{date,jdbcType=DATE}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+
+  <select id="getByReviewId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from reply_info
+    where review_id = #{reviewId}
+  </select>
+
+</mapper>
