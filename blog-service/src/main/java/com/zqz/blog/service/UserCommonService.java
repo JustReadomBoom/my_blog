@@ -3,6 +3,8 @@ package com.zqz.blog.service;
 import com.zqz.blog.entity.User;
 import com.zqz.blog.enums.RespEnum;
 import com.zqz.blog.model.request.LoginReq;
+import com.zqz.blog.model.request.UpdateUserReq;
+import com.zqz.blog.model.response.GetUserResp;
 import com.zqz.blog.model.response.LoginResp;
 import com.zqz.blog.model.response.WebResp;
 import com.zqz.blog.utils.MD5Util;
@@ -43,5 +45,41 @@ public class UserCommonService {
         loginResp.setLoginName(StringUtils.isBlank(user.getNickName()) ? userName : user.getNickName());
         loginResp.setLoginId(user.getId());
         return new WebResp<>(loginResp);
+    }
+
+    public WebResp<GetUserResp> doGetUserInfo(Integer userId) {
+        User user = userService.getUserById(userId);
+
+        if(null == user){
+            log.info("User is not exist, id = [{}]", userId);
+            return new WebResp<>(RespEnum.RE_03);
+        }
+
+        GetUserResp userResp = new GetUserResp();
+        userResp.setUserName(user.getUserName());
+        userResp.setNickName(user.getNickName());
+        userResp.setAge(user.getAge());
+        userResp.setMobile(user.getMobile());
+        userResp.setEmail(user.getEmail());
+        userResp.setPhotoUrl(user.getPhotoUrl());
+        userResp.setSex(user.getSex());
+
+        return new WebResp<>(userResp);
+    }
+
+    public WebResp doUpdateUser(UpdateUserReq req) {
+        Integer userId = req.getUserId();
+
+        User user = new User();
+        user.setId(userId);
+        user.setNickName(req.getNickName());
+        user.setSex(req.getSex());
+        user.setAge(req.getAge());
+        user.setMobile(req.getMobile());
+        user.setEmail(req.getEmail());
+
+        userService.updateUser(user);
+
+        return new WebResp();
     }
 }

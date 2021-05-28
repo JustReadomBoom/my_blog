@@ -32,4 +32,8 @@ public class UserService {
     public User getUserById(Integer authId) {
         return mapper.getUserById(authId);
     }
+
+    public int updateUser(User user) {
+        return mapper.updateUser(user);
+    }
 }

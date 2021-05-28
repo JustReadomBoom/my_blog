@@ -14,4 +14,6 @@ public interface UserMapper {
     List<User> getUsers();
 
     User getUserById(@Param("authId") Integer authId);
+
+    int updateUser(User user);
 }
