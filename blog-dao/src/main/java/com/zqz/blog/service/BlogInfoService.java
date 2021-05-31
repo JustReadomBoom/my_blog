@@ -33,4 +33,8 @@ public class BlogInfoService {
     public int updateById(UpBlogDTO upBlogDTO) {
         return mapper.updateById(upBlogDTO);
     }
+
+    public List<BlogInfo> getBlogByLoginId(String loginId) {
+        return mapper.getBlogByLoginId(loginId);
+    }
 }

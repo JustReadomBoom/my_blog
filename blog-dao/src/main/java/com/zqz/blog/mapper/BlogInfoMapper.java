@@ -15,4 +15,6 @@ public interface BlogInfoMapper {
     BlogInfo getBlogById(@Param("blogId") Integer blogId);
 
     int updateById(UpBlogDTO upBlogDTO);
+
+    List<BlogInfo> getBlogByLoginId(@Param("loginId") String loginId);
 }

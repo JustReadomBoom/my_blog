@@ -61,4 +61,12 @@
     where id = #{blogId}
   </update>
 
+  <select id="getBlogByLoginId" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List"/>,
+    <include refid="Blob_Column_List"/>
+    from blog_info
+    where auth_id = #{loginId}
+  </select>
+
 </mapper>

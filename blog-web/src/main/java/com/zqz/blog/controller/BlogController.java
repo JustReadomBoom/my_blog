@@ -5,6 +5,7 @@ import com.zqz.blog.model.request.SubmitBlogReq;
 import com.zqz.blog.model.request.SubmitReviewReq;
 import com.zqz.blog.model.response.BlogListResp;
 import com.zqz.blog.model.response.GetBlogByIdResp;
+import com.zqz.blog.model.response.GetBlogByLoginIdResp;
 import com.zqz.blog.model.response.WebResp;
 import com.zqz.blog.service.BlogCommonService;
 import lombok.extern.slf4j.Slf4j;
@@ -64,4 +65,16 @@ public class BlogController {
             return new WebResp<>(RespEnum.RE_99);
         }
     }
+
+
+    @GetMapping("/getBlogByLoginId")
+    public WebResp<GetBlogByLoginIdResp> getBlogByLoginId(@RequestParam("loginId") String loginId) {
+        try {
+            return blogCommonService.doGetBlogByLoginId(loginId);
+        } catch (Exception e) {
+            log.error("getBlogByLoginId error:[{}]", e.getMessage(), e);
+            return new WebResp<>(RespEnum.RE_99);
+        }
+    }
+
 }

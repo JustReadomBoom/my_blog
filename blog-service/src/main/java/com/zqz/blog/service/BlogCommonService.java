@@ -8,10 +8,7 @@ import com.zqz.blog.enums.RespEnum;
 import com.zqz.blog.model.request.SubmitBlogReq;
 import com.zqz.blog.model.request.SubmitReviewReq;
 import com.zqz.blog.model.request.UpBlogDTO;
-import com.zqz.blog.model.response.BlogListDTO;
-import com.zqz.blog.model.response.BlogListResp;
-import com.zqz.blog.model.response.GetBlogByIdResp;
-import com.zqz.blog.model.response.WebResp;
+import com.zqz.blog.model.response.*;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -134,5 +131,31 @@ public class BlogCommonService {
             return new WebResp();
         }
         return new WebResp(RespEnum.RE_01);
+    }
+
+    public WebResp<GetBlogByLoginIdResp> doGetBlogByLoginId(String loginId) {
+
+        List<BlogInfo> blogs = blogInfoService.getBlogByLoginId(loginId);
+        if(blogs.isEmpty()){
+            return new WebResp<>(RespEnum.RE_05);
+        }
+
+        GetBlogByLoginIdResp resp = new GetBlogByLoginIdResp();
+
+        List<GetBlogByIdResp> queryList = new ArrayList<>();
+
+        for(BlogInfo b : blogs){
+            GetBlogByIdResp blog = new GetBlogByIdResp();
+            blog.setBlogId(b.getId());
+            blog.setTitle(b.getTitle());
+            blog.setContent(b.getContent());
+            blog.setDate(b.getcTime());
+            blog.setLookNum(b.getLookNum());
+            blog.setLikeNum(b.getLikeNum());
+            blog.setReviewNum(b.getReviewNum());
+            queryList.add(blog);
+        }
+        resp.setBlogList(queryList);
+        return new WebResp<>(resp);
     }
 }
