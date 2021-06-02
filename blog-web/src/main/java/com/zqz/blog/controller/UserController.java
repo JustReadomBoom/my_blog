@@ -5,11 +5,13 @@ import com.zqz.blog.model.request.LoginReq;
 import com.zqz.blog.model.request.UpdateUserReq;
 import com.zqz.blog.model.response.GetUserResp;
 import com.zqz.blog.model.response.LoginResp;
+import com.zqz.blog.model.response.UploadImgResp;
 import com.zqz.blog.model.response.WebResp;
 import com.zqz.blog.service.UserCommonService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Author: zqz
@@ -54,4 +56,16 @@ public class UserController {
             return new WebResp<>(RespEnum.RE_99);
         }
     }
+
+    @PostMapping("/uploadImg")
+    public WebResp<UploadImgResp> uploadImg(@RequestParam MultipartFile file,
+                                            @RequestParam("userId") Integer userId) {
+        try {
+            return userCommonService.doUploadImg(file, userId);
+        } catch (Exception e) {
+            log.error("uploadImg error:[{}]", e.getMessage(), e);
+            return new WebResp<>(RespEnum.RE_99);
+        }
+    }
+
 }

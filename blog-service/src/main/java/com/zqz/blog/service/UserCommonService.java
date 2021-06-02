@@ -6,12 +6,15 @@ import com.zqz.blog.model.request.LoginReq;
 import com.zqz.blog.model.request.UpdateUserReq;
 import com.zqz.blog.model.response.GetUserResp;
 import com.zqz.blog.model.response.LoginResp;
+import com.zqz.blog.model.response.UploadImgResp;
 import com.zqz.blog.model.response.WebResp;
 import com.zqz.blog.utils.MD5Util;
+import com.zqz.blog.utils.SeqUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  * @Author: zqz
@@ -23,6 +26,8 @@ import org.springframework.stereotype.Service;
 public class UserCommonService {
     @Autowired
     private UserService userService;
+    @Autowired
+    private OssFileService ossFileService;
 
     public WebResp<LoginResp> doLogin(LoginReq req){
         String userName = req.getUserName();
@@ -81,5 +86,27 @@ public class UserCommonService {
         userService.updateUser(user);
 
         return new WebResp();
+    }
+
+    public WebResp<UploadImgResp> doUploadImg(MultipartFile file, Integer userId) {
+
+        User user = userService.getUserById(userId);
+        if(null == user){
+            return new WebResp<>(RespEnum.RE_03);
+        }
+
+        String filePath = SeqUtil.createLongSqp() + ".jpg";
+        String url = ossFileService.fileUpload(file, filePath);
+
+        if(StringUtils.isBlank(url)){
+            return new WebResp<>(RespEnum.RE_01);
+        }
+
+        user.setPhotoUrl(url);
+        userService.updateUser(user);
+
+        UploadImgResp resp = new UploadImgResp();
+        resp.setImgUrl(url);
+        return new WebResp<>(resp);
     }
 }
