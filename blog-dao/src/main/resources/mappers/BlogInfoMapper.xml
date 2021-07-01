@@ -69,4 +69,10 @@
     where auth_id = #{loginId}
   </select>
 
+  <update id="addReviewNum">
+    update blog_info
+    set review_num = review_num + 1
+    where id = #{blogId}
+  </update>
+
 </mapper>

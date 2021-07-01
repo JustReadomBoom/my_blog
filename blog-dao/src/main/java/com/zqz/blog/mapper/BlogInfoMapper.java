@@ -17,4 +17,6 @@ public interface BlogInfoMapper {
     int updateById(UpBlogDTO upBlogDTO);
 
     List<BlogInfo> getBlogByLoginId(@Param("loginId") String loginId);
+
+    int addReviewNum(@Param("blogId") Integer blogId);
 }

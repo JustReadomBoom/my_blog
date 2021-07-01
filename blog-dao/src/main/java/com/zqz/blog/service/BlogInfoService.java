@@ -37,4 +37,8 @@ public class BlogInfoService {
     public List<BlogInfo> getBlogByLoginId(String loginId) {
         return mapper.getBlogByLoginId(loginId);
     }
+
+    public int addReviewNum(Integer blogId) {
+        return mapper.addReviewNum(blogId);
+    }
 }

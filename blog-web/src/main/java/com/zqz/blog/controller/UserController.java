@@ -2,6 +2,7 @@ package com.zqz.blog.controller;
 
 import com.zqz.blog.enums.RespEnum;
 import com.zqz.blog.model.request.LoginReq;
+import com.zqz.blog.model.request.RegisterReq;
 import com.zqz.blog.model.request.UpdateUserReq;
 import com.zqz.blog.model.response.GetUserResp;
 import com.zqz.blog.model.response.LoginResp;
@@ -32,6 +33,16 @@ public class UserController {
             return userCommonService.doLogin(req);
         } catch (Exception e) {
             log.error("login error:[{}]", e.getMessage(), e);
+            return new WebResp<>(RespEnum.RE_99);
+        }
+    }
+
+    @PostMapping("/register")
+    public WebResp register(@RequestBody RegisterReq req) {
+        try {
+            return userCommonService.doRegister(req);
+        } catch (Exception e) {
+            log.error("register error:[{}]", e.getMessage(), e);
             return new WebResp<>(RespEnum.RE_99);
         }
     }

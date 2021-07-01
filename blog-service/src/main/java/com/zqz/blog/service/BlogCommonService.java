@@ -41,7 +41,6 @@ public class BlogCommonService {
         if (!blogs.isEmpty()) {
             List<BlogListDTO> blogList = new ArrayList<>();
             for (BlogInfo bi : blogs) {
-                log.info("Blog:[{}]", JSON.toJSONString(bi));
                 Integer authId = bi.getAuthId();
                 BlogListDTO dto = new BlogListDTO();
                 dto.setBlogId(bi.getId());
@@ -55,7 +54,6 @@ public class BlogCommonService {
                 dto.setContent(bi.getContent());
 
                 User u = userService.getUserById(authId);
-                log.info("User:[{}]", JSON.toJSONString(u));
                 dto.setNickName(Optional.of(u).map(User::getNickName).orElse(null));
                 dto.setAuthImgUrl(Optional.of(u).map(User::getPhotoUrl).orElse(null));
 
@@ -71,7 +69,6 @@ public class BlogCommonService {
     public WebResp<GetBlogByIdResp> doGetBlogByBlogId(Integer blogId) {
         WebResp<GetBlogByIdResp> resp = new WebResp<>();
         BlogInfo blog = blogInfoService.getBlogById(blogId);
-        log.info("Blog:[{}]", JSON.toJSONString(blog));
         if (null == blog) {
             return new WebResp<>(RespEnum.RE_05);
         }

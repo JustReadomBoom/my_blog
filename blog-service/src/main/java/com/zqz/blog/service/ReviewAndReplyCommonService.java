@@ -33,6 +33,8 @@ public class ReviewAndReplyCommonService {
     private ReplyInfoService replyInfoService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private BlogInfoService blogInfoService;
 
 
     public WebResp<ReviewAndReplyResp> doGetByBlogId(Integer blogId) {
@@ -98,8 +100,12 @@ public class ReviewAndReplyCommonService {
 
         int i = reviewInfoService.insert(r);
         if (i > 0) {
+            //更新评论数量
+            blogInfoService.addReviewNum(blogId);
             return new WebResp();
         }
+
+
         return new WebResp(RespEnum.RE_01);
     }
 

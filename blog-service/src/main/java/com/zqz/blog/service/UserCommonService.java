@@ -3,6 +3,7 @@ package com.zqz.blog.service;
 import com.zqz.blog.entity.User;
 import com.zqz.blog.enums.RespEnum;
 import com.zqz.blog.model.request.LoginReq;
+import com.zqz.blog.model.request.RegisterReq;
 import com.zqz.blog.model.request.UpdateUserReq;
 import com.zqz.blog.model.response.GetUserResp;
 import com.zqz.blog.model.response.LoginResp;
@@ -32,7 +33,6 @@ public class UserCommonService {
     public WebResp<LoginResp> doLogin(LoginReq req){
         String userName = req.getUserName();
         String pwd = req.getPwd();
-        log.info("-----> do login, userName:[{}], pwd:[{}]", userName, pwd);
 
         User user = userService.getUserByUserName(userName);
 
@@ -108,5 +108,28 @@ public class UserCommonService {
         UploadImgResp resp = new UploadImgResp();
         resp.setImgUrl(url);
         return new WebResp<>(resp);
+    }
+
+    public WebResp doRegister(RegisterReq req) {
+        WebResp resp = new WebResp<>();
+        String userName = req.getUserName();
+        String pwd = req.getPwd();
+        String rePwd = req.getRePwd();
+
+        if(!pwd.equals(rePwd)){
+            return new WebResp(RespEnum.RE_07);
+        }
+
+        User user = userService.getUserByUserName(userName);
+        if(null != user){
+            return new WebResp(RespEnum.RE_08);
+        }
+
+        User u = new User();
+        u.setUserName(userName);
+        u.setPassword(MD5Util.Md5(pwd, 32));
+        u.setStatus(1);
+        userService.insert(u);
+        return resp;
     }
 }
